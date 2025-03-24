@@ -18,3 +18,12 @@ Templates para Publicações e Formatação de Data
 Font Awesome
 Curtir Publicação
 Descurtir Publicação
+<!-- -------------------------- 23-03-25 -------------------------- -->
+
+<!-- -------------------------- 24-03-25 -------------------------- -->
+Página de atualização de publicação;
+Atualização de publicação;
+Exclusão de publicação;
+Implementado bibliotecaSweetAlert
+Logout
+<!-- -------------------------- 24-03-25 -------------------------- -->
