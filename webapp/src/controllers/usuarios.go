@@ -5,8 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"webapp/src/config"
+	"webapp/src/requests"
 	"webapp/src/responses"
+
+	"github.com/gorilla/mux"
 )
 
 // CriarUsuario chama a API para cadastrar um usuário no banco de dados
@@ -36,6 +40,54 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 	if response.StatusCode >= 400 {
 		responses.TratarStatusCodeDeErro(w, response)
 		return
+	}
+
+	responses.JSON(w, response.StatusCode, nil)
+}
+
+// PararDeSeguirUsuario chama a API para parar de seguir um usuário
+func PararDeSeguirUsuario(w http.ResponseWriter, r *http.Request) {
+	parametros := mux.Vars(r)
+	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
+	if erro != nil {
+		responses.JSON(w, http.StatusBadRequest, responses.ErroAPI{Erro: erro.Error()})
+		return
+	}
+
+	url := fmt.Sprintf("%s/usuarios/%d/parar-de-seguir", config.APIURL, usuarioID)
+	response, erro := requests.FazerRequisicaoComAutenticacao(r, http.MethodPost, url, nil)
+	if erro != nil {
+		responses.JSON(w, http.StatusInternalServerError, responses.ErroAPI{Erro: erro.Error()})
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode >= 400 {
+		responses.TratarStatusCodeDeErro(w, response)
+	}
+
+	responses.JSON(w, response.StatusCode, nil)
+}
+
+// SeguirUsuario chama a API para seguir um usuário
+func SeguirUsuario(w http.ResponseWriter, r *http.Request) {
+	parametros := mux.Vars(r)
+	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
+	if erro != nil {
+		responses.JSON(w, http.StatusBadRequest, responses.ErroAPI{Erro: erro.Error()})
+		return
+	}
+
+	url := fmt.Sprintf("%s/usuarios/%d/seguir", config.APIURL, usuarioID)
+	response, erro := requests.FazerRequisicaoComAutenticacao(r, http.MethodPost, url, nil)
+	if erro != nil {
+		responses.JSON(w, http.StatusInternalServerError, responses.ErroAPI{Erro: erro.Error()})
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode >= 400 {
+		responses.TratarStatusCodeDeErro(w, response)
 	}
 
 	responses.JSON(w, response.StatusCode, nil)

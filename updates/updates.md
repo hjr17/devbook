@@ -24,6 +24,19 @@ Descurtir Publicação
 Página de atualização de publicação;
 Atualização de publicação;
 Exclusão de publicação;
-Implementado bibliotecaSweetAlert
-Logout
+Implementado bibliotecaSweetAlert;
+Logout;
+Validação para Usuário logado;
+Busca de Usuários;
+Página do Perfil do Usuário;
+Busca de Usuario por ID (Utilizando Concorrência)
 <!-- -------------------------- 24-03-25 -------------------------- -->
+
+<!-- -------------------------- 25-03-25 -------------------------- -->
+Utilizando Select na prática;
+Trazendo informações para o perfil do usuário;
+Seguir e parar de seguir usuário;
+Lista de seguidores;
+Perfil do Usuário Logado
+<!-- -------------------------- 25-03-25 -------------------------- -->
+
