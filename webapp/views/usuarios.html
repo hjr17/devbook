@@ -15,7 +15,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Usuários Encontrados </h5>
+                        <h5 class="card-title">Usuários Encontrados</h5>
                         {{ range . }}
                             <p class="card-text">
                                 {{ .Nome }} - <a href="/usuarios/{{ .ID }}">{{ .Nick }}</a> - Membro Desde: {{ .CriadoEm.Format "02/01/2006" }}

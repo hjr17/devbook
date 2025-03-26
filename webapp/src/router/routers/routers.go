@@ -24,7 +24,6 @@ func Configurar(router *mux.Router) *mux.Router {
 	rotas = append(rotas, rotaLogout)
 
 	for _, rota := range rotas {
-
 		if rota.RequerAutenticacao {
 			router.HandleFunc(rota.URI,
 				middlewares.Logger(middlewares.Autenticar(rota.Funcao)),
@@ -34,8 +33,6 @@ func Configurar(router *mux.Router) *mux.Router {
 				middlewares.Logger(rota.Funcao),
 			).Methods(rota.Metodo)
 		}
-
-		router.HandleFunc(rota.URI, rota.Funcao).Methods(rota.Metodo)
 	}
 
 	fileServer := http.FileServer(http.Dir("./assets/"))
