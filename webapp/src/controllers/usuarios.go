@@ -26,24 +26,24 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if erro != nil {
-		responses.JSON(w, http.StatusBadRequest, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 
 	url := fmt.Sprintf("%s/usuarios", config.APIURL)
 	response, erro := http.Post(url, "application/json", bytes.NewBuffer(usuario))
 	if erro != nil {
-		responses.JSON(w, http.StatusInternalServerError, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode >= 400 {
-		responses.TratarStatusCodeDeErro(w, response)
+		respostas.TratarStatusCodeDeErro(w, response)
 		return
 	}
 
-	responses.JSON(w, response.StatusCode, nil)
+	respostas.JSON(w, response.StatusCode, nil)
 }
 
 // PararDeSeguirUsuario chama a API para parar de seguir um usuário
@@ -51,23 +51,23 @@ func PararDeSeguirUsuario(w http.ResponseWriter, r *http.Request) {
 	parametros := mux.Vars(r)
 	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
 	if erro != nil {
-		responses.JSON(w, http.StatusBadRequest, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 
 	url := fmt.Sprintf("%s/usuarios/%d/parar-de-seguir", config.APIURL, usuarioID)
 	response, erro := requests.FazerRequisicaoComAutenticacao(r, http.MethodPost, url, nil)
 	if erro != nil {
-		responses.JSON(w, http.StatusInternalServerError, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode >= 400 {
-		responses.TratarStatusCodeDeErro(w, response)
+		respostas.TratarStatusCodeDeErro(w, response)
 	}
 
-	responses.JSON(w, response.StatusCode, nil)
+	respostas.JSON(w, response.StatusCode, nil)
 }
 
 // SeguirUsuario chama a API para seguir um usuário
@@ -75,23 +75,23 @@ func SeguirUsuario(w http.ResponseWriter, r *http.Request) {
 	parametros := mux.Vars(r)
 	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
 	if erro != nil {
-		responses.JSON(w, http.StatusBadRequest, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 
 	url := fmt.Sprintf("%s/usuarios/%d/seguir", config.APIURL, usuarioID)
 	response, erro := requests.FazerRequisicaoComAutenticacao(r, http.MethodPost, url, nil)
 	if erro != nil {
-		responses.JSON(w, http.StatusInternalServerError, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode >= 400 {
-		responses.TratarStatusCodeDeErro(w, response)
+		respostas.TratarStatusCodeDeErro(w, response)
 	}
 
-	responses.JSON(w, response.StatusCode, nil)
+	respostas.JSON(w, response.StatusCode, nil)
 }
 
 // EditarUsuario chama a API para editar um usuário
@@ -103,7 +103,7 @@ func EditarUsuario(w http.ResponseWriter, r *http.Request) {
 		"email": r.FormValue("email"),
 	})
 	if erro != nil {
-		responses.JSON(w, http.StatusBadRequest, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 
@@ -114,16 +114,16 @@ func EditarUsuario(w http.ResponseWriter, r *http.Request) {
 
 	response, erro := requests.FazerRequisicaoComAutenticacao(r, http.MethodPut, url, bytes.NewBuffer(usuario))
 	if erro != nil {
-		responses.JSON(w, http.StatusInternalServerError, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode >= 400 {
-		responses.TratarStatusCodeDeErro(w, response)
+		respostas.TratarStatusCodeDeErro(w, response)
 	}
 
-	responses.JSON(w, response.StatusCode, nil)
+	respostas.JSON(w, response.StatusCode, nil)
 }
 
 // AtualizarSenha chama a API para atualizar a senha do usuário
@@ -134,7 +134,7 @@ func AtualizarSenha(w http.ResponseWriter, r *http.Request) {
 		"nova":  r.FormValue("nova"),
 	})
 	if erro != nil {
-		responses.JSON(w, http.StatusBadRequest, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 
@@ -144,16 +144,16 @@ func AtualizarSenha(w http.ResponseWriter, r *http.Request) {
 	url := fmt.Sprintf("%s/usuarios/%d/atualizar-senha", config.APIURL, usuarioID)
 	response, erro := requests.FazerRequisicaoComAutenticacao(r, http.MethodPost, url, bytes.NewBuffer(senhas))
 	if erro != nil {
-		responses.JSON(w, http.StatusInternalServerError, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode >= 400 {
-		responses.TratarStatusCodeDeErro(w, response)
+		respostas.TratarStatusCodeDeErro(w, response)
 	}
 
-	responses.JSON(w, response.StatusCode, nil)
+	respostas.JSON(w, response.StatusCode, nil)
 }
 
 // DeletarUsuario chama a API para deletar um usuário
@@ -165,14 +165,14 @@ func DeletarUsuario(w http.ResponseWriter, r *http.Request) {
 
 	response, erro := requests.FazerRequisicaoComAutenticacao(r, http.MethodDelete, url, nil)
 	if erro != nil {
-		responses.JSON(w, http.StatusInternalServerError, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode >= 400 {
-		responses.TratarStatusCodeDeErro(w, response)
+		respostas.TratarStatusCodeDeErro(w, response)
 	}
 
-	responses.JSON(w, response.StatusCode, nil)
+	respostas.JSON(w, response.StatusCode, nil)
 }

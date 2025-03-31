@@ -38,18 +38,18 @@ func CarregarPaginaPrincipal(w http.ResponseWriter, r *http.Request) {
 	url := fmt.Sprintf("%s/publicacoes", config.APIURL)
 	response, erro := requests.FazerRequisicaoComAutenticacao(r, http.MethodGet, url, nil)
 	if erro != nil {
-		responses.JSON(w, http.StatusUnprocessableEntity, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusUnprocessableEntity, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode >= 400 {
-		responses.TratarStatusCodeDeErro(w, response)
+		respostas.TratarStatusCodeDeErro(w, response)
 	}
 
 	var publicacoes []models.Publicacao
 	if erro = json.NewDecoder(response.Body).Decode(&publicacoes); erro != nil {
-		responses.JSON(w, http.StatusUnprocessableEntity, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusUnprocessableEntity, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 
@@ -70,26 +70,26 @@ func CarregarPaginaDeAtualizacaoDePublicacao(w http.ResponseWriter, r *http.Requ
 	parametros := mux.Vars(r)
 	publicacaoID, erro := strconv.ParseUint(parametros["publicacaoId"], 10, 64)
 	if erro != nil {
-		responses.JSON(w, http.StatusBadRequest, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 
 	url := fmt.Sprintf("%s/publicacoes/%d", config.APIURL, publicacaoID)
 	response, erro := requests.FazerRequisicaoComAutenticacao(r, http.MethodGet, url, nil)
 	if erro != nil {
-		responses.JSON(w, http.StatusInternalServerError, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode >= 400 {
-		responses.TratarStatusCodeDeErro(w, response)
+		respostas.TratarStatusCodeDeErro(w, response)
 		return
 	}
 
 	var publicacao models.Publicacao
 	if erro = json.NewDecoder(response.Body).Decode(&publicacao); erro != nil {
-		responses.JSON(w, http.StatusUnprocessableEntity, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusUnprocessableEntity, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 
@@ -103,19 +103,19 @@ func CarregarPaginaDeUsuarios(w http.ResponseWriter, r *http.Request) {
 
 	response, erro := requests.FazerRequisicaoComAutenticacao(r, http.MethodGet, url, nil)
 	if erro != nil {
-		responses.JSON(w, http.StatusInternalServerError, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode >= 400 {
-		responses.TratarStatusCodeDeErro(w, response)
+		respostas.TratarStatusCodeDeErro(w, response)
 		return
 	}
 
 	var usuarios []models.Usuario
 	if erro = json.NewDecoder(response.Body).Decode(&usuarios); erro != nil {
-		responses.JSON(w, http.StatusUnprocessableEntity, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusUnprocessableEntity, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 
@@ -127,7 +127,7 @@ func CarregarPerfilDoUsuario(w http.ResponseWriter, r *http.Request) {
 	parametros := mux.Vars(r)
 	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
 	if erro != nil {
-		responses.JSON(w, http.StatusBadRequest, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 
@@ -141,7 +141,7 @@ func CarregarPerfilDoUsuario(w http.ResponseWriter, r *http.Request) {
 
 	usuario, erro := models.BuscarUsuarioCompleto(usuarioID, r)
 	if erro != nil {
-		responses.JSON(w, http.StatusInternalServerError, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 
@@ -161,7 +161,7 @@ func CarregarPerfilDoUsuarioLogado(w http.ResponseWriter, r *http.Request) {
 
 	usuario, erro := models.BuscarUsuarioCompleto(usuarioID, r)
 	if erro != nil {
-		responses.JSON(w, http.StatusInternalServerError, responses.ErroAPI{Erro: erro.Error()})
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
 		return
 	}
 
@@ -178,7 +178,7 @@ func CarregarPaginaDeEdicaoDeUsuario(w http.ResponseWriter, r *http.Request) {
 	usuario := <-canal
 
 	if usuario.ID == 0 {
-		responses.JSON(w, http.StatusInternalServerError, responses.ErroAPI{Erro: "erro ao buscar o usuário"})
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: "erro ao buscar o usuário"})
 		return
 	}
 
